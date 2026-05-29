@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-503ZSLGF0W"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-503ZSLGF0W');
+    function trackEvent(action, params) {
+      if (typeof gtag === 'function') gtag('event', action, params || {});
+    }
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free Typing Speed Test – Check Your WPM | TypingTest</title>
+  <meta name="description" content="Test your typing speed for free. Measure your WPM (words per minute), accuracy, and get a detailed breakdown. Compare with average scores. No sign-up needed.">
+  <meta name="keywords" content="typing test, typing speed test, wpm test, typing practice, how fast can I type, typing speed">
+  <meta property="og:title" content="Free Typing Speed Test – Check Your WPM">
+  <meta property="og:description" content="Test your typing speed for free. WPM, accuracy, and detailed breakdown. No sign-up.">
+  <meta property="og:url" content="https://typing-test.vercel.app/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="TypingTest">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Free Typing Speed Test">
+  <meta name="twitter:description" content="How fast can you type? Take the free WPM test!">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="canonical" href="https://typing-test.vercel.app/">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Courier New', monospace, -apple-system, sans-serif; background: #0f172a; color: #e2e8f0; min-height: 100vh; }
+    .container { max-width: 750px; margin: 0 auto; padding: 20px; }
+    .header { text-align: center; padding: 32px 20px; background: linear-gradient(135deg, #0891b2, #06b6d4); border-radius: 16px; margin-bottom: 20px; }
+    .header h1 { font-size: 28px; font-weight: 800; margin-bottom: 6px; }
+    .header p { font-size: 14px; opacity: 0.85; }
+    .card { background: #1e293b; border-radius: 12px; padding: 24px; margin-bottom: 16px; border: 1px solid #334155; }
+    .card h2 { font-size: 16px; margin-bottom: 12px; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; }
+    .text-display { background: #0f172a; border: 2px solid #334155; border-radius: 8px; padding: 20px; font-size: 18px; line-height: 1.8; min-height: 120px; margin-bottom: 16px; user-select: none; }
+    .text-display .correct { color: #22c55e; }
+    .text-display .incorrect { color: #ef4444; background: rgba(239,68,68,0.2); }
+    .text-display .current { background: #6366f1; color: white; border-radius: 2px; }
+    .text-display .pending { color: #64748b; }
+    #userInput { width: 100%; padding: 12px; font-size: 18px; font-family: 'Courier New', monospace; background: #0f172a; border: 2px solid #475569; border-radius: 8px; color: #e2e8f0; outline: none; }
+    #userInput:focus { border-color: #6366f1; }
+    #userInput:disabled { opacity: 0.5; }
+    .stats-row { display: flex; gap: 16px; justify-content: center; margin: 16px 0; flex-wrap: wrap; }
+    .stat-item { text-align: center; }
+    .stat-item .num { font-size: 36px; font-weight: 700; color: #06b6d4; }
+    .stat-item .label { font-size: 12px; color: #64748b; text-transform: uppercase; letter-spacing: 1px; }
+    .btn { padding: 14px 32px; border: none; border-radius: 10px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.15s; }
+    .btn-primary { background: #0891b2; color: white; }
+    .btn-primary:hover { background: #0e7490; }
+    .btn-start { background: #22c55e; color: white; }
+    .btn-start:hover { background: #16a34a; }
+    .btn-share { background: #1da1f2; color: white; }
+    .btn-share:hover { background: #1a8cd8; }
+    .btn-retake { background: #6366f1; color: white; }
+    .btn-retake:hover { background: #4f46e5; }
+    .hidden { display: none; }
+    .tagline { text-align: center; font-size: 12px; color: #475569; padding: 16px; }
+    .tagline a { color: #06b6d4; text-decoration: none; }
+    .timer { text-align: center; font-size: 48px; font-weight: 700; color: #06b6d4; margin-bottom: 8px; font-family: 'Courier New', monospace; }
+    .timer.warning { color: #f59e0b; }
+    .timer.danger { color: #ef4444; }
+    .result-big { font-size: 72px; font-weight: 700; text-align: center; color: #06b6d4; line-height: 1; }
+    .result-big small { font-size: 20px; color: #64748b; }
+    .result-details { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-top: 16px; }
+    .detail-item { background: #0f172a; border-radius: 8px; padding: 12px; text-align: center; }
+    .detail-item .num { font-size: 24px; font-weight: 700; color: #e2e8f0; }
+    .detail-item .label { font-size: 11px; color: #64748b; margin-top: 4px; }
+    @media (max-width: 480px) { .result-big { font-size: 48px; } .result-details { grid-template-columns: 1fr 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>⌨️ Typing Speed Test</h1>
+      <p>Measure your WPM, accuracy, and typing skill</p>
+    </div>
+
+    <!-- Start Screen -->
+    <div id="startScreen" class="card">
+      <h2>Ready?</h2>
+      <p style="font-size:14px;color:#94a3b8;line-height:1.6;">
+        You'll have <strong>60 seconds</strong> to type as many words as possible.<br>
+        Type the highlighted word and press <strong>Space</strong> to move to the next.<br>
+        Accuracy matters! Only correctly typed words count toward your WPM.
+      </p>
+      <div style="margin-top:16px;text-align:center;">
+        <button class="btn btn-start" id="startBtn">Start Test →</button>
+      </div>
+    </div>
+
+    <!-- Test Screen -->
+    <div id="testScreen" class="card hidden">
+      <div class="timer" id="timer">60</div>
+      <div class="text-display" id="textDisplay"></div>
+      <input type="text" id="userInput" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Type the highlighted word here..." disabled>
+      <div class="stats-row">
+        <div class="stat-item"><div class="num" id="liveWpm">0</div><div class="label">WPM</div></div>
+        <div class="stat-item"><div class="num" id="liveAccuracy">100</div><div class="label">Accuracy %</div></div>
+        <div class="stat-item"><div class="num" id="liveWords">0</div><div class="label">Words</div></div>
+      </div>
+    </div>
+
+    <!-- Result Screen -->
+    <div id="resultScreen" class="card hidden">
+      <div class="result-big" id="finalWpm">0 <small>WPM</small></div>
+      <div class="result-details">
+        <div class="detail-item"><div class="num" id="finalAccuracy">0</div><div class="label">Accuracy</div></div>
+        <div class="detail-item"><div class="num" id="finalWords">0</div><div class="label">Words Typed</div></div>
+        <div class="detail-item"><div class="num" id="finalCorrect">0</div><div class="label">Correct</div></div>
+      </div>
+      <div style="margin-top:20px;display:flex;gap:12px;flex-direction:column;">
+        <button class="btn btn-share" id="shareBtn" style="width:100%;">📤 Share My Score</button>
+        <button class="btn btn-retake" id="retakeBtn" style="width:100%;">🔄 Try Again</button>
+      </div>
+    </div>
+
+    <div class="tagline">
+      <a href="https://typing-test.vercel.app/">TypingTest</a> — Free typing speed test by JCS Labs
+    </div>
+  </div>
+
+  <script>
+    // ─── Word List ──────────────────────────────────────────
+    const WORD_POOL = [
+      'the', 'be', 'to', 'of', 'and', 'a', 'in', 'that', 'have', 'it',
+      'for', 'not', 'on', 'with', 'he', 'as', 'you', 'do', 'at', 'this',
+      'but', 'his', 'by', 'from', 'they', 'we', 'say', 'her', 'she', 'or',
+      'an', 'will', 'my', 'one', 'all', 'would', 'there', 'their', 'what', 'so',
+      'up', 'out', 'if', 'about', 'who', 'get', 'which', 'go', 'me', 'when',
+      'make', 'can', 'like', 'time', 'no', 'just', 'him', 'know', 'take', 'people',
+      'into', 'year', 'your', 'good', 'some', 'could', 'them', 'see', 'other', 'than',
+      'then', 'now', 'look', 'only', 'come', 'its', 'over', 'think', 'also', 'back',
+      'after', 'use', 'two', 'how', 'our', 'work', 'first', 'well', 'way', 'even',
+      'new', 'want', 'because', 'any', 'these', 'give', 'day', 'most', 'us', 'great',
+      'between', 'need', 'large', 'often', 'hand', 'high', 'place', 'small', 'under', 'long',
+      'right', 'still', 'house', 'world', 'last', 'school', 'never', 'city', 'tree', 'cross',
+      'farm', 'hard', 'start', 'might', 'story', 'saw', 'far', 'sea', 'draw', 'left',
+      'late', 'run', 'while', 'press', 'close', 'night', 'real', 'life', 'few', 'north',
+      'open', 'seem', 'together', 'next', 'white', 'children', 'begin', 'got', 'walk', 'example',
+      'ease', 'paper', 'group', 'always', 'music', 'those', 'both', 'mark', 'book', 'letter',
+      'until', 'mile', 'river', 'car', 'feet', 'care', 'second', 'enough', 'plain', 'girl',
+      'usual', 'young', 'ready', 'above', 'ever', 'red', 'list', 'though', 'feel', 'talk',
+      'bird', 'soon', 'body', 'dog', 'family', 'direct', 'pose', 'leave', 'song', 'measure',
+      'door', 'product', 'black', 'short', 'number', 'class', 'wind', 'question', 'happen', 'complete',
+      'ship', 'area', 'half', 'rock', 'order', 'fire', 'south', 'problem', 'piece', 'told',
+      'knew', 'pass', 'since', 'top', 'whole', 'king', 'space', 'heard', 'best', 'hour',
+      'better', 'true', 'during', 'hundred', 'am', 'remember', 'step', 'early', 'hold', 'west',
+      'ground', 'interest', 'reach', 'fast', 'verb', 'sing', 'listen', 'six', 'table', 'travel',
+      'less', 'morning', 'ten', 'simple', 'several', 'vowel', 'toward', 'war', 'lay', 'against'
+    ];
+
+    const TEST_DURATION = 60;
+    let words = [];
+    let currentWordIndex = 0;
+    let typedWords = []; // { word, correct }
+    let timer = TEST_DURATION;
+    let timerInterval = null;
+    let isRunning = false;
+
+    function shuffle(arr) {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    function pickWords(count) {
+      const shuffled = shuffle([...WORD_POOL]);
+      return shuffled.slice(0, count);
+    }
+
+    // ─── DOM refs ──────────────────────────────────────────
+    const startScreen = document.getElementById('startScreen');
+    const testScreen = document.getElementById('testScreen');
+    const resultScreen = document.getElementById('resultScreen');
+    const textDisplay = document.getElementById('textDisplay');
+    const userInput = document.getElementById('userInput');
+    const timerEl = document.getElementById('timer');
+    const liveWpm = document.getElementById('liveWpm');
+    const liveAccuracy = document.getElementById('liveAccuracy');
+    const liveWords = document.getElementById('liveWords');
+    const finalWpm = document.getElementById('finalWpm');
+    const finalAccuracy = document.getElementById('finalAccuracy');
+    const finalWords = document.getElementById('finalWords');
+    const finalCorrect = document.getElementById('finalCorrect');
+
+    document.getElementById('startBtn').addEventListener('click', startTest);
+    document.getElementById('retakeBtn').addEventListener('click', startTest);
+    document.getElementById('shareBtn').addEventListener('click', shareResult);
+
+    function startTest() {
+      startScreen.classList.add('hidden');
+      resultScreen.classList.add('hidden');
+      testScreen.classList.remove('hidden');
+      
+      currentWordIndex = 0; typedWords = []; timer = TEST_DURATION;
+      isRunning = false;
+      words = pickWords(200);
+      
+      timerEl.textContent = timer;
+      timerEl.className = 'timer';
+      liveWpm.textContent = '0';
+      liveAccuracy.textContent = '100';
+      liveWords.textContent = '0';
+      userInput.value = '';
+      userInput.disabled = false;
+      userInput.focus();
+      
+      renderWords();
+      trackEvent('test_start', { tool: 'typing_test' });
+      
+      // Start timer on first keystroke
+      userInput.addEventListener('input', onFirstInput, { once: true });
+    }
+
+    function onFirstInput() {
+      isRunning = true;
+      timerInterval = setInterval(() => {
+        timer--;
+        timerEl.textContent = timer;
+        if (timer <= 10) timerEl.classList.add('danger');
+        else if (timer <= 20) timerEl.classList.add('warning');
+        if (timer <= 0) endTest();
+      }, 1000);
+    }
+
+    function renderWords() {
+      let html = '';
+      for (let i = 0; i < words.length; i++) {
+        const w = words[i];
+        let cls = 'pending';
+        if (i < currentWordIndex) {
+          const tw = typedWords[i];
+          cls = tw && tw.correct ? 'correct' : 'incorrect';
+        } else if (i === currentWordIndex) {
+          cls = 'current';
+        }
+        html += '<span class="' + cls + '">' + w + '</span> ';
+      }
+      textDisplay.innerHTML = html;
+    }
+
+    // Listen for space key to submit word
+    userInput.addEventListener('keydown', (e) => {
+      if (!isRunning) return;
+      if (e.key === ' ') {
+        e.preventDefault();
+        const typed = userInput.value.trim().toLowerCase();
+        if (!typed) return;
+        
+        const correct = typed === words[currentWordIndex].toLowerCase();
+        typedWords.push({ word: words[currentWordIndex], typed, correct });
+        
+        if (correct) trackEvent('word_correct', { tool: 'typing_test' });
+        
+        userInput.value = '';
+        currentWordIndex++;
+        renderWords();
+        updateLiveStats();
+        
+        // Auto-scroll text display
+        textDisplay.scrollTop = 0;
+      }
+    });
+
+    function updateLiveStats() {
+      const total = typedWords.length;
+      const correct = typedWords.filter(w => w.correct).length;
+      const elapsed = TEST_DURATION - timer;
+      const minutes = elapsed > 0 ? elapsed / 60 : 1;
+      const wpm = Math.round(correct / minutes);
+      const accuracy = total > 0 ? Math.round((correct / total) * 100) : 100;
+      
+      liveWpm.textContent = wpm;
+      liveAccuracy.textContent = accuracy;
+      liveWords.textContent = total;
+    }
+
+    function endTest() {
+      isRunning = false;
+      clearInterval(timerInterval);
+      userInput.disabled = true;
+      
+      const total = typedWords.length;
+      const correct = typedWords.filter(w => w.correct).length;
+      const minutes = TEST_DURATION / 60;
+      const wpm = Math.round(correct / minutes);
+      const accuracy = total > 0 ? Math.round((correct / total) * 100) : 0;
+      
+      setTimeout(() => {
+        testScreen.classList.add('hidden');
+        resultScreen.classList.remove('hidden');
+        finalWpm.innerHTML = wpm + ' <small>WPM</small>';
+        finalAccuracy.textContent = accuracy + '%';
+        finalWords.textContent = total;
+        finalCorrect.textContent = correct;
+        trackEvent('test_complete', { tool: 'typing_test', wpm, accuracy, words_typed: total });
+      }, 500);
+    }
+
+    function shareResult() {
+      const wpm = document.getElementById('finalWpm').textContent.trim();
+      const acc = finalAccuracy.textContent;
+      const text = `⌨️ I just took a typing test! My speed: ${wpm} with ${acc} accuracy.\n\nTest your speed for free 👇\nhttps://typing-test.vercel.app/`;
+      
+      if (navigator.share) {
+        navigator.share({ title: 'My Typing Speed', text }).catch(() => {});
+      } else {
+        navigator.clipboard.writeText(text).then(() => {
+          alert('📋 Result copied! Share it with your friends.');
+        }).catch(() => {
+          window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(text), '_blank');
+        });
+      }
+      trackEvent('share_result', { tool: 'typing_test', wpm: finalWpm.textContent.trim() });
+    }
+  </script>
+</body>
+</html>
